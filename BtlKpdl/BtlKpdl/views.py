@@ -37,9 +37,14 @@ def result(request):
     pred = model.predict([[val1, val2, val3, val4, val5, val6, val7, val8]])
 
     result2 = ""
-    if pred == [1]:
-        result2 = "Tiểu đường"
+    if pred == [1] and val2 > 130:
+        result2 = " Tiểu đường"
+        advice = " Ăn uống theo chế độ, giảm tinh bột, ưu tiên ăn chay, bớt ăn đồ ngọt"
+    elif  pred == [1] and val2 >= 110 and val2 <= 130:
+        result2 = " Tiền tiểu đường"
+        advice = " Cần ăn uống điều độ, giảm tinh bột, ăn nhiều rau củ ít tinh bột"
     else:
-        result2 = "Bình thường"
+        result2 = " Bình thường"
+        advice = " Không bị bệnh, nên giữ chế độ ăn uống hiện tại và healthy hơn nếu có thể"
 
-    return render(request, 'predict.html', {"result2": result2})
+    return render(request, 'predict.html', {"result2": result2, "advice": advice})
