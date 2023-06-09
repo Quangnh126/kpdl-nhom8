@@ -8,6 +8,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn import preprocessing
 import numpy as np
+import pickle
 
 def home(request):
     return render(request, 'home.html')
@@ -34,7 +35,22 @@ def result(request):
     val7 = float(request.GET['n7'])
     val8 = float(request.GET['n8'])
 
-    pred = model.predict([[val1, val2, val3, val4, val5, val6, val7, val8]])
+    # pred = model.predict([[val1, val2, val3, val4, val5, val6, val7, val8]])
+
+    loaded_model = pickle.load(open('C:/Users/ADMIN/Desktop/KPDL/BTL/train_model.sav', 'rb'))
+
+    input_data = (val1, val2, val3, val4, val5, val6, val7, val8)
+
+    # changing the input_data to numpy array
+    input_data_as_numpy_array = np.asarray(input_data)
+
+    # reshape the array as we are predicting for one instance
+    input_data_reshaped = input_data_as_numpy_array.reshape(1, -1)
+
+    # pred = loaded_model.predict([[val1, val2, val3, val4, val5, val6, val7, val8]])
+    pred = loaded_model.predict(input_data_reshaped)
+
+
 
     result2 = ""
     if pred == [1] and val2 > 130:
